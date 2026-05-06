@@ -2,7 +2,7 @@ name: Data Pipeline
 
 on:
   schedule:
-    - cron: '0 8 * * 1'
+    - cron: '30 12 5 * *'
   workflow_dispatch:
 
 jobs:

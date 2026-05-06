@@ -1,23 +1,42 @@
 import pandas as pd
 import os
+import logging
 
-# Ensure output directory exists
-os.makedirs("output", exist_ok=True)
+logging.basicConfig(level=logging.INFO)
 
-print("Loading data...")
-df = pd.read_parquet("data/sample_data.parquet")
+logging.info("Pipeline started")
 
-print("Processing data...")
-df["revenue"] = df["price"] * df["qty"]
+try:
+    os.makedirs("output", exist_ok=True)
+
+    logging.info("Loading data...")
+    try:
+        df = pd.read_parquet("data/sample_data.parquet")
+    except FileNotFoundError:
+        logging.error("Data file not found")
+        raise
+    except Exception as e:
+        logging.error(f"Error occurred while loading data: {e}")
+        raise
+
+    logging.info("Processing data...")
+    df["revenue"] = df["price"] * df["qty"]
+    df["transaction_count"] = 1
 
 # Compute summary
-summary = df.groupby("category").agg(
-    total_revenue=("revenue", "sum"),
-    total_quantity=("qty", "sum"),
-    avg_price=("price", "mean")
-).reset_index()
+    summary = df.groupby("category").agg(
+        total_revenue=("revenue", "sum"),
+        total_quantity=("qty", "sum"),
+        avg_price=("price", "mean"),
+        transaction_count=("transaction_count", "sum")
+    ).reset_index()
 
-print("Saving report...")
-summary.to_csv("output/report.csv", index=False)
+    logging.info("Saving report...")
+    summary.to_csv("output/report.csv", index=False)
 
-print("✅ Report generated at output/report.csv")
+    logging.info("Pipeline completed successfully")
+
+
+except Exception as e:
+    logging.error(f"Pipeline failed: {e}")
+    raise
