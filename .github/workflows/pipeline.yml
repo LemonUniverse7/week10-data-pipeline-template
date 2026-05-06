@@ -30,6 +30,12 @@ jobs:
         with:
           name: report
           path: output/report_*.csv
+          name: report_json
+          path: output/report_*.json
+          name: report_parquet
+          path: output/report_*.parquet
+          name: pipeline_log
+          path: output/pipeline.log
       
       - name: Failure notification
         if: failure()
