@@ -6,7 +6,7 @@ import time
 
 DATA_PATH = os.getenv("DATA_PATH", "data/sample_data.parquet")
 
-timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 logging.basicConfig(filename="output/pipeline.log", level=logging.INFO)
 
