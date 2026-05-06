@@ -22,7 +22,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run pipeline
-        run: python scripts/pipeline.py
+        run: python scripts/report.py
 
       - name: Upload report
         if: success()
